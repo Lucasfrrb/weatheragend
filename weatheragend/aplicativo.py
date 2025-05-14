@@ -4,16 +4,23 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 from io import BytesIO
+import geocoder
 
-API_KEY = "SUA_CHAVE_DA_API"
-CIDADE = "Vitória,BR"
+'''Localizar o usuario'''
+g = geocoder.ip('me')
+cidade = g.city
+pais = g.country
+
+
+API_KEY = 'f735300abb8fadb243af1cbcba5d4d81'
+CIDADE = f'{cidade},{pais}'
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CIDADE}&appid={API_KEY}&units=metric&lang=pt_br"
 
 '''Estrutura da Janela'''
 Tela_inicial = Tk()
 Tela_inicial.title("Water Diary")
 Tela_inicial.geometry("900x600")
-Tela_inicial.resizable(False, False)
+Tela_inicial.resizable(True, True)
 Tela_inicial.config(bg="Silver") 
 
 
@@ -60,7 +67,7 @@ def atualizar_clima():
         
         label_temp.config(text=f"{temp:.1f} °C")
         label_desc.config(text=descricao.capitalize())
-        label_umidade.config(text=f"Umidade: {umidade}%")
+        label_umidade.config(text=f"Humildade: {umidade}%")
 
         
         icone_url = f"http://openweathermap.org/img/wn/{icone_id}@2x.png"
@@ -70,7 +77,6 @@ def atualizar_clima():
         label_icone.image = icone_tk
 
     except Exception as e:
-        print(f"Erro: {e}")  
         messagebox.showerror("Erro", f"Não foi possível atualizar o clima.\n{e}")
 
 atualizar_clima()
@@ -78,4 +84,3 @@ atualizar_clima()
 
 '''Inicia programa'''
 Tela_inicial.mainloop()
-
